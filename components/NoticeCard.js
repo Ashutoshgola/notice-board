@@ -38,12 +38,12 @@ export default function NoticeCard({ notice, onDelete }) {
         </Link>
 
         <button
-          onClick={() => onDelete(notice.id)}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        onClick={() => onDelete(notice.id)}
+        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
         >
-          Delete
+        Delete
         </button>
       </div>
     </div>
-  );
+  )
 }

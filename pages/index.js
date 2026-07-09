@@ -1,15 +1,46 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import NoticeCard from "../components/NoticeCard";
+import DeleteModal from "../components/DeleteModal";
 
 export default function Home() {
   const [notices, setNotices] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     fetch("/api/notices")
       .then((res) => res.json())
-      .then((data) => setNotices(data));
+      .then((data) => setNotices(data))
+      .catch((err) => console.error(err));
   }, []);
+
+  function handleDelete(id) {
+    setSelectedId(id);
+    setShowModal(true);
+  }
+
+  async function confirmDelete() {
+    try {
+      const res = await fetch(`/api/notices/${selectedId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete notice");
+      }
+
+      setNotices((prev) =>
+        prev.filter((notice) => notice.id !== selectedId)
+      );
+
+      setShowModal(false);
+      setSelectedId(null);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete notice");
+    }
+  }
 
   return (
     <>
@@ -36,12 +67,21 @@ export default function Home() {
               <NoticeCard
                 key={notice.id}
                 notice={notice}
-                onDelete={() => {}}
+                onDelete={handleDelete}
               />
             ))}
           </div>
         )}
       </main>
+
+      <DeleteModal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedId(null);
+        }}
+        onConfirm={confirmDelete}
+      />
     </>
   );
 }
