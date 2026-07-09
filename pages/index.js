@@ -58,7 +58,7 @@ export default function Home() {
             </h2>
 
             <p className="text-gray-500 mt-2">
-              Click "Add Notice" to create your first notice.
+              Click &quot;Add Notice&quot; to create your first notice.
             </p>
           </div>
         ) : (

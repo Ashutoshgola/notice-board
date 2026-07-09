@@ -27,8 +27,7 @@ export default async function handler(req, res) {
         publishDate,
         image,
       } = req.body;
-
-      // Server-side validation
+        // for server
       if (!title || !body || !publishDate) {
         return res.status(400).json({
           message: "Title, Body and Publish Date are required.",
